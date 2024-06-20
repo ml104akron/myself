@@ -1,47 +1,133 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-        .p{color: black;background-color: brown;}
+      .p {
+        color: black;
+        background-color: brown;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<svg id="bound_box" width="400" height="320" left="20" top="20"  style="position:absolute; top:20px; left:20px; background-color:#f2f2f2; "> 
-    
-    <circle id="pion0" cx = "20" cy = "20" r="9" stroke-width="0" stroke="#000" fill="#909"></circle>
-</svg>
+  <body>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <svg
+      id="bound_box"
+      width="200"
+      height="200"
+      left="20"
+      top="20"
+      style="
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #f2f2f2;
+      "
+    >
+      <circle
+        id="pion0"
+        cx="20"
+        cy="20"
+        r="9"
+        velocityx="-2"
+        velocityy="2"
+        stroke-width="0"
+        stroke="#000"
+        fill="#909"
+      ></circle>
+      <circle
+        id="pion1"
+        cx="50"
+        cy="20"
+        r="9"
+        velocityx="-2"
+        velocityy="2"
+        stroke-width="0"
+        stroke="#000"
+        fill="#909"
+      ></circle>
+      <circle
+        id="pion2"
+        cx="100"
+        cy="200"
+        r="9"
+        velocityx="5"
+        velocityy="3"
+        stroke-width="0"
+        stroke="#000"
+        fill="#909"
+      ></circle>
+    </svg>
 
-<script>
-        var timerFunction = null;
-        var velocity = [-2, 2]
-        function startAnimation() {
-                        timerFunction = setInterval(animate, 20); 
-                }
-        function animate() {
-
-            var circle = document.getElementById("pion0");
-            var x = circle.getAttribute("cx");
-            var y = circle.getAttribute("cy");
-            var newX = velocity[1] + parseInt(x);
-            var newY = velocity[0] + parseInt(y);
-            if ((newX < 5) || (newX > 200)) {
-                velocity[1] = -velocity[1];
-            }
-            if ((newY < 5) || (newY > 200)) {
-                velocity[0] = -velocity[0];
-            }
-          document.getElementById("pion0").setAttribute("cx", newX);
-          document.getElementById("pion0").setAttribute("cy", newY);
+    <script>
+      var timerFunction = null;
+      function startAnimation() {
+        if (timerFunction === null) {
+          var a = Math.random;
+          timerFunction = setInterval(animate, 20);
         }
+      }
 
-</script>
+      function animate() {
+        var pointlist = ["pion0", "pion1", "pion2"];
+        var F = 0;
+        var d = 0;
+        var k = 0.008;
+        for (var i = 0; i < 3; i++) {
+          var circle = document.getElementById(pointlist[i]);
+          var x = circle.getAttribute("cx");
+          var y = circle.getAttribute("cy");
 
-<input type="button" value="开始动画" onclick="startAnimation();">
-</body>
+          var vx = parseFloat(circle.getAttribute("velocityx"));
+          var vy = parseFloat(circle.getAttribute("velocityy"));
 
+          var newX = parseInt(x) + parseInt(vx);
+          var newY = parseInt(y) + parseInt(vy);
+          for (var j = 0; j < 3; j++) {
+            if (j != i) {
+              var circle2 = document.getElementById(pointlist[j]);
+              var x2 = circle2.getAttribute("cx");
+              var y2 = circle2.getAttribute("cy");
+
+              d = distance(x, y, x2, y2);
+              document.getElementById("ans").innerHTML = document
+                .getElementById("pion0")
+                .getAttribute("velocityx");
+              F = (d - 30) * k;
+              vx = vx + (F * (x - x2)) / d;
+              vy = vy + (F * (y - y2)) / d;
+            }
+          }
+          if (newX < 50 || newX > 200) {
+            document
+              .getElementById(pointlist[i])
+              .setAttribute("velocityx", -vx);
+          } else {
+            document.getElementById(pointlist[i]).setAttribute("velocityx", vx);
+          }
+          if (newY < 50 || newY > 200) {
+            document
+              .getElementById(pointlist[i])
+              .setAttribute("velocityy", -vy);
+          } else {
+            document.getElementById(pointlist[i]).setAttribute("velocityy", vy);
+          }
+          document.getElementById(pointlist[i]).setAttribute("cx", newX);
+          document.getElementById(pointlist[i]).setAttribute("cy", newY);
+        }
+      }
+      function distance(x1, y1, x2, y2) {
+        var dx = x2 - x1;
+        var dy = y2 - y1;
+        return Math.sqrt(dx * dx + dy * dy);
+      }
+    </script>
+
+    <input type="button" value="开始动画" onclick="startAnimation();" />
+
+    <p id="ans">dd</p>
+  </body>
 </html>

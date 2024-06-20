@@ -8,12 +8,40 @@
         .p{color: black;background-color: brown;}
     </style>
 </head>
-<body style="display:flex; flex-direction:column;align-items:start;justify-content:flex-end;">
-    <button class="p" type="submit">dd</button>
-    <button style="flex:1" > dd </button>
-    <input type="range" min="0" max="10"></input>
-    <input value="asdf">asdf</input>
-    <img src="https://img2.baidu.com/it/u=1277409875,2113747161&fm=253&fmt=auto&app=138&f=JPEG?w=750&h=500">
+
+<body>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<svg id="bound_box" width="400" height="320" left="20" top="20"  style="position:absolute; top:20px; left:20px; background-color:#f2f2f2; "> 
+    
+    <circle id="pion0" cx = "20" cy = "20" r="9" stroke-width="0" stroke="#000" fill="#909"></circle>
+</svg>
+
+<script>
+        var timerFunction = null;
+        var velocity = [-2, 2]
+        function startAnimation() {
+                        timerFunction = setInterval(animate, 20); 
+                }
+        function animate() {
+
+            var circle = document.getElementById("pion0");
+            var x = circle.getAttribute("cx");
+            var y = circle.getAttribute("cy");
+            var newX = velocity[1] + parseInt(x);
+            var newY = velocity[0] + parseInt(y);
+            if ((newX < 5) || (newX > 200)) {
+                velocity[1] = -velocity[1];
+            }
+            if ((newY < 5) || (newY > 200)) {
+                velocity[0] = -velocity[0];
+            }
+          document.getElementById("pion0").setAttribute("cx", newX);
+          document.getElementById("pion0").setAttribute("cy", newY);
+        }
+
+</script>
+
+<input type="button" value="开始动画" onclick="startAnimation();">
 </body>
 
 </html>

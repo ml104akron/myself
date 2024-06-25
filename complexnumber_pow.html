@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+    <svg
+      preserveAspectRatio="xMaxYMin slice"
+      id="bound_box"
+      width="800"
+     
+      height="800"
+      left="20"
+      top="20"
+      style="
+        position: absolute;
+        top: 20px;
+        left: 30px;
+        background-color: #d6f0e6;
+      "
+    >
+        <g id="g" transform="translate(400,400) scale(1)" ></g>
+    </svg>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br /> 
+    <br />
+    <br />
+    <br />
+    <br /> 
+    <br />
+    <br />
+    <br />
+    <br /> 
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+
+    <input
+      id="constant"
+      width="500px"
+      type="range"
+      min="0"
+      max="2"
+      step="0.01"
+      value="1"
+      onchange="asdf(this.value)"
+    >
+    <input
+      id="zoom"
+      width="500px"
+      type="range"
+      min="0.05"
+      max="10"
+      step="0.05"
+      value="1"
+      onchange="zoom(this.value)"
+    >
+        <p id="answer"></p>
+  </body>
+  <script>
+    var g = document.getElementById("g");
+    var matrixsize=200;
+    var densityofpoint=10;
+
+    function zoom(value){
+      var a=value
+      document.getElementById("g").setAttribute("transform","translate(400,400) scale("+ String(a) +")")
+        for (i = -matrixsize; i < matrixsize; i = i + densityofpoint) {
+          for (j = -matrixsize; j < matrixsize; j = j + densityofpoint) {
+            document.getElementById(String(i) + String(j)).setAttribute("r",5/a)
+          }
+        }
+    }
+
+
+
+    function asdf(value) {
+      var constant = value;
+      var g = document.getElementById("g");
+
+      if (!g.childElementCount) {
+        document.getElementById("answer").innerHTML = g.childElementCount;
+        for (i = -matrixsize; i < matrixsize; i = i + densityofpoint) {
+          for (j = -matrixsize; j < matrixsize; j = j + densityofpoint) {
+            var circle = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "circle"
+            );
+            circle.setAttribute("cx", i);
+            circle.setAttribute("cy", j);
+            circle.setAttribute("r", 5);
+            circle.setAttribute(
+              "fill",
+              "rgb(" +
+                (parseInt(i) + 300) / 2 +
+                "," +
+                (parseInt(j) + 300) / 2 +
+                ",155)"
+            );
+            circle.setAttribute("id", String(i) + String(j));
+
+            g.appendChild(circle);
+            document.getElementById("answer").innerHTML = g.childElementCount;
+          }
+        }
+      } else {
+        for (i = -matrixsize; i < matrixsize; i = i + densityofpoint) {
+          for (j = -matrixsize; j < matrixsize; j = j + densityofpoint) {
+            dote = document.getElementById(String(i) + String(j));
+            var x = i;
+            var y = j;
+            var r = Math.sqrt(x * x + y * y);
+            var thita = Math.atan(y / (x)) + Math.PI * ((x < 0))- Math.PI/2 ;
+
+            var xnew = Math.pow(r, constant) * Math.cos(constant * thita);
+            var ynew = Math.pow(r, constant) * Math.sin(constant * thita);
+            dote.setAttribute("cx", xnew);
+            dote.setAttribute("cy", ynew);
+          }
+          document.getElementById("answer").innerHTML = constant;
+        }
+      }
+    }
+  </script>
+</html>

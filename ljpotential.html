@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r166/three.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
 
   </head>
   <body>
@@ -61,7 +62,7 @@
         const axis = new THREE.AxesHelper(1500);
         scene.add(axis);
 
-        const gui = new GUI();
+        const gui = new dat.GUI();
         gui.domElement.style.position = "absolute";
         gui.domElement.style.top = "0px";
         gui.domElement.style.right = "0px";

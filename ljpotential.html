@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+<math xmlns="http://www.w3.org/1998/Math/MathML", style="font-size: 50px; right:200px;" >
+  <mrow>
+    <mrow>
+    <mi>y</mi>
+    <mo>=</mo>
+    <mn>4</mn>
+    <mi>a</mi>
+    <mo>(</mo>
+    <mrow>
+      <msup>
+        <mrow>
+          <mo>(</mo>
+          <mfrac>
+            <mi>b</mi>
+            <mi>x</mi>
+          </mfrac>
+          <mo>)</mo>
+        </mrow>
+        <mn>12</mn>
+      </msup>
+      <mo>-</mo>
+      <msup>
+        <mrow>
+          <mo>(</mo>
+          <mfrac>
+            <mi>b</mi>
+            <mi>x</mi>
+          </mfrac>
+          <mo>)</mo>
+        </mrow>
+        <mn>6</mn>
+      </msup>
+    </mrow>
+    <mo>)</mo>
+  </mrow>
+  </math>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../three.js-dev/build/three.module.js",
+          "three/addons/": "../three.js-dev/examples/jsm/"
+        }
+      }
+    </script>
+
+      <script type="module">
+        import * as THREE from "three";
+        import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+        import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+        import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+        import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+        import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+        import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+        import { FontLoader } from "three/addons/loaders/FontLoader.js";
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const camera = new THREE.OrthographicCamera(
+          -10,
+          300,
+          -100,
+          30,
+          -100,
+          1000
+        );
+        const scene = new THREE.Scene();
+        const axis = new THREE.AxesHelper(1500);
+        scene.add(axis);
+
+        const gui = new GUI();
+        gui.domElement.style.position = "absolute";
+        gui.domElement.style.top = "0px";
+        gui.domElement.style.right = "0px";
+
+        camera.position.set(0, 0, -10);
+        camera.lookAt(0, 0, 0);
+        camera.rotation.z = Math.PI / 18000;
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const param = { a: 1, b: 2 };
+        function plotpoints() {
+          for (var i = 1; i < 300; i++) {
+            var x = i;
+
+            var y =
+              40 *
+              param.a *
+              (Math.pow((param.b ) / x, 12) -
+                Math.pow((param.b ) / x, 6));
+            const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+            const material = new THREE.MeshBasicMaterial({ color: 0xfff550 });
+            const sphere = new THREE.Mesh(geometry, material);
+            sphere.position.set(x, y);
+            sphere.name = i;
+            scene.add(sphere);
+          }
+        }
+
+        plotpoints();
+
+        renderer.render(scene, camera);
+
+        gui.add(param, "a", 0, 10).onChange(function (value) {
+          for (var i = 1; i < 300; i++) {
+            scene.getObjectByName(i).position.y =
+              40 *
+              param.a *
+              (Math.pow((param.b ) / i, 12) -
+                Math.pow((param.b ) / i, 6));
+          }
+          renderer.render(scene, camera);
+        });
+        gui.add(param, "b", 0, 300).onChange(function (value) {
+          for (var i = 1; i < 300; i++) {
+            scene.getObjectByName(i).position.y =
+              40 *
+              param.a *
+              (Math.pow((param.b ) / i, 12) -
+                Math.pow((param.b ) / i, 6));
+          }
+          renderer.render(scene, camera);
+        });
+        window.onresize = function () {
+          cemera.aspect = window.innerWidth / window.innerHeight;
+          cemera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          renderer.render(scene, cemera);
+        };
+        document.body.appendChild(renderer.domElement);
+      </script>
+    </p>
+  </body>
+</html>
